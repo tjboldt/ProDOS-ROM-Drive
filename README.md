@@ -3,7 +3,7 @@ This is a peripheral card for the Apple ][ series computers that acts as a read-
 
 ## History
 
-My first Apple computer was an Apple IIe that my brother bought in early 1984. Countless hours were spent playing games which developed my interest in building games. This also led to the creation of various utilities to help organize disks or just to see what could be done while programming.
+My first Apple computer was an Apple //e that my brother bought in early 1984. Countless hours were spent playing games which developed my interest in building games. This also led to the creation of various utilities to help organize disks or just to see what could be done while programming.
 
 As time passed, I obtained other machines far more powerful and eventually my once loved Apple IIe got used less and less. I did still pull it out of storage every few months to play some classic games or see what I could accomplish with greater programming skills. The problem was connecting up disk drives, looking for disks and hoping that the disks still worked. To make life simpler, I decided I needed to come up with some way to permanently store the files inside the computer without needing to plug in anything but the power and video connectors. This is where the idea for a solid-state drive began.
 
@@ -15,7 +15,7 @@ By mid-May of 1999 I finally got around to building a third design. This time I 
 
 To build actual circuit boards, I tried making some by hand with marker, etching solution and copper on fibreglass boards but this proved to be far too difficult. I then learned the wonders of gerber files which can be created with a variety of PCB layout software. The files were emailed to a company in Alberta, Canada and three days later in July of 1999 I received a batch of 10 blank boards. These boards did not have the familiar green board look to them, nor were they pre-cut. I had to cut and file them to fit an Apple II slot by hand. Back then it was prohitively expensive for a young hobbiest to make less than 20 or 30 boards with the full solder-masking process due to the set-up fees.
 
-In 2019, I decided to revisit the original design as I was disappointed that the original didn't have a solder mask and was rather large for what it was. I got the board much smaller but in the process of translating my two decade old hand written notes, made a mistake on one control line. To actually call this project finished, I had to make another revision. I also noticed the revised board was slightly larger than a credit card so I worked for a couple weeks to optimize the lines and squeeze the two-layer board down to 3.375" x 2.125". The board here is that final revision 2.5 (references to first, second and third design are all the prototypes leading up to the 1.0 circuit board).
+In 2019, I decided to revisit the original design as I was disappointed that the original didn't have a solder mask and was rather large for what it was. I got the board much smaller but in the process of translating my two decade old hand written notes, I made a mistake on one control line. To actually call this project finished, I had to make another revision. I also noticed the revised board was slightly larger than a credit card so I worked for a couple weeks to optimize the lines and squeeze the two-layer board down to 3.375" x 2.125". The board here is that final revision 2.5 (note that references to first, second and third design are all the solderless breadboard prototypes leading up to the 1.0 circuit board printed in 1999, 2.0 was never made, 2.1 is the board with the error patched with a jumper wire and 2.2 through 2.4 were never made).
 
 ## Notes
 
@@ -25,3 +25,5 @@ I usually use Ciderpress to copy files onto the drive image and then burn the fi
 
 If you're planning on designing you own card, I highly recommend reading "Interfacing & Digital Experiments with your Apple" by Charles J. Engelisher and Apple's "Apple II Reference Manual" as well as "ProDOS Technical Reference Manual" if you want to build a drive. You also need an EPROM programmer, some chips and a prototyping board. My designs used simple logic gates to decode addresses but if you want to reduce chip count, you'll also need a PAL/GAL logic programmer (which some EPROM programmers can do).
 
+##
+Official website is [apple2.ca](http://apple2.ca/).
