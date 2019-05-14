@@ -1,6 +1,8 @@
 # ProDOS ROM-Drive
 This is a peripheral card for the Apple ][ series computers that acts as a read-only solid state disk drive (SSD) all in EPROM. Although it won't run DOS, it is fully ProDOS compatible and will appear as a read-only hard drive even when booting from another drive. It holds 1022 KB of disk data and 2 KB of controlling code making a full megabyte. The drive boots ProDOS and into BASIC in under 1.5 seconds. 
 
+![Image of Board](/Hardware/ProDOS%20ROM-Drive%202.5%20Front.jpg)
+
 ## History
 
 My first Apple computer was an Apple //e that my brother bought in early 1984. Countless hours were spent playing games which developed my interest in building games. This also led to the creation of various utilities to help organize disks or just to see what could be done while programming.
