@@ -1,0 +1,1 @@
+    .byte "Do not overwrite any of blocks after this point as it is used for the firmware. There are 7 copies of the 256 byte firmware, one for each slot due to 6502 code being non-relocatable. Have fun and feel free to improve on the hardware / sofware.  --- Terence"
