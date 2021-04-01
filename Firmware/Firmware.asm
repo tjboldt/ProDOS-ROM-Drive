@@ -100,14 +100,6 @@ boot:    lda     #$01    ;set read command
 	sta     bufhi
 	jsr     entry   ;get the block
 
-	lda     #$00    ;block 1
-	sta     blklo
-	sta     blkhi
-	sta     buflo   ;buffer at $A00
-	lda     #$0A
-	sta     bufhi
-	jsr     entry   ;get the block
-
 	ldx     #sdrive ;set up for slot n
 	jmp     $801    ;execute the block
 
