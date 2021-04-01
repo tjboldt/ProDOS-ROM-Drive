@@ -186,20 +186,18 @@ loop16:  lda     slotrd,x        ;get a byte
 	inc     sram1           ;next 16 bytes
 	cpy     #$00
 	bne     loop256         ;go until 256 total
-
 	rts
 
-text:    .byte      "ROM-Drive (c)1998-2019 Terence J. Boldt", 0
+text:   .byte      "ROM-Drive (c)1998-2019 Terence J. Boldt"
+end:
+	.byte	 0
 
 ; These bytes need to be at the top of the 256 byte firmware as ProDOS
 ; uses these to find the entry point and drive capabilities
 
-; In 1998, cc65 used to allow this but now with ld65 removes the padded bytes
-;	.org     $C0FC+slot*$100 
-
-; CAUTION: These are padding bytes entered manually, add or remove
-;          to match if changing code. Firmware must be 256 bytes 
-    .byte      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+.repeat	251-<end
+.byte 0
+.endrepeat
 
 	.byte      0,0     ;0000 blocks = check status
 	.byte      3       ;bit 0=read 1=status
