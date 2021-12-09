@@ -1,13 +1,12 @@
 EESchema Schematic File Version 4
-LIBS:ProDOS ROMDrive 2-cache
-EELAYER 26 0
+EELAYER 30 0
 EELAYER END
 $Descr USLetter 8500 11000 portrait
 encoding utf-8
 Sheet 1 1
 Title "ProDOS ROM-Drive"
-Date ""
-Rev "2.2"
+Date "2021-12-07"
+Rev "3.0"
 Comp ""
 Comment1 ""
 Comment2 ""
@@ -584,21 +583,9 @@ Wire Wire Line
 Wire Wire Line
 	1800 2950 2750 2950
 Wire Wire Line
-	2750 2950 2750 6200
-Wire Wire Line
-	2750 6200 3050 6200
-Wire Wire Line
 	1800 2850 2800 2850
 Wire Wire Line
-	2800 2850 2800 6300
-Wire Wire Line
-	2800 6300 3050 6300
-Wire Wire Line
 	1800 2750 2850 2750
-Wire Wire Line
-	2850 2750 2850 6400
-Wire Wire Line
-	2850 6400 3050 6400
 Wire Wire Line
 	1800 1450 2100 1450
 Wire Wire Line
@@ -608,57 +595,13 @@ Wire Wire Line
 Wire Wire Line
 	2900 4750 2900 5500
 Wire Wire Line
-	2900 6500 3050 6500
-Wire Wire Line
-	2900 6500 2900 6700
-Wire Wire Line
-	2900 7800 3050 7800
-Connection ~ 2900 6500
-Wire Wire Line
-	2900 7800 2900 7900
-Wire Wire Line
-	2900 7900 3050 7900
-Connection ~ 2900 7800
-Wire Wire Line
-	2900 7900 2900 8000
-Wire Wire Line
-	2900 8000 3050 8000
-Connection ~ 2900 7900
-Wire Wire Line
-	2900 8000 2900 8100
-Wire Wire Line
-	2900 8100 3050 8100
-Connection ~ 2900 8000
-Wire Wire Line
-	2900 8100 2900 8200
-Wire Wire Line
-	2900 8200 3050 8200
-Connection ~ 2900 8100
-Wire Wire Line
-	2900 8200 2900 8300
-Wire Wire Line
-	2900 8300 3050 8300
-Connection ~ 2900 8200
-Wire Wire Line
-	2900 8300 2900 8400
-Wire Wire Line
-	2900 8400 3050 8400
-Connection ~ 2900 8300
-Wire Wire Line
-	2900 8400 2900 8500
-Wire Wire Line
-	2900 8500 3050 8500
-Connection ~ 2900 8400
-Wire Wire Line
 	3550 7500 2900 7500
 Connection ~ 2900 7500
-Wire Wire Line
-	2900 7500 2900 7800
 Wire Wire Line
 	3550 5500 2900 5500
 Connection ~ 2900 5500
 Wire Wire Line
-	2900 5500 2900 6500
+	2900 5500 2900 6200
 Wire Wire Line
 	2100 4750 1900 4750
 Wire Wire Line
@@ -697,7 +640,7 @@ Wire Wire Line
 Wire Wire Line
 	1650 6550 1650 7100
 Wire Wire Line
-	1650 7100 3550 7100
+	1650 7100 2750 7100
 Connection ~ 1650 6550
 Wire Wire Line
 	3550 7100 4100 7100
@@ -729,7 +672,7 @@ Wire Wire Line
 Wire Wire Line
 	1650 7100 1650 9100
 Wire Wire Line
-	1650 9100 3550 9100
+	1650 9100 2750 9100
 Connection ~ 1650 7100
 Wire Wire Line
 	1800 3850 2400 3850
@@ -737,8 +680,6 @@ Wire Wire Line
 	2400 3850 2400 4700
 Wire Wire Line
 	2400 4700 3000 4700
-Wire Wire Line
-	3000 4700 3000 6800
 Wire Wire Line
 	3000 7000 5250 7000
 Wire Wire Line
@@ -760,7 +701,6 @@ Wire Wire Line
 	1150 7250 1150 6250
 Wire Wire Line
 	3000 6800 3050 6800
-Connection ~ 3000 6800
 Wire Wire Line
 	3000 6800 3000 7000
 Wire Wire Line
@@ -773,13 +713,6 @@ Wire Wire Line
 Wire Wire Line
 	700  2950 700  7200
 Wire Wire Line
-	700  7200 2950 7200
-Wire Wire Line
-	2950 7200 2950 4600
-Connection ~ 2950 7200
-Wire Wire Line
-	2950 7200 5150 7200
-Wire Wire Line
 	2900 4400 2900 2600
 Wire Wire Line
 	2900 2600 3000 2600
@@ -789,10 +722,7 @@ Connection ~ 2900 6700
 Wire Wire Line
 	2900 6700 2900 7500
 Wire Wire Line
-	2900 8500 2900 8700
-Wire Wire Line
 	2900 8700 3050 8700
-Connection ~ 2900 8500
 Wire Wire Line
 	2450 3750 2450 4650
 Wire Wire Line
@@ -1265,4 +1195,80 @@ Wire Wire Line
 Wire Wire Line
 	6200 7350 6200 7550
 Connection ~ 6550 7100
+Wire Wire Line
+	2900 7500 2900 8700
+Wire Wire Line
+	2750 9100 2750 8500
+Wire Wire Line
+	2750 7800 3050 7800
+Connection ~ 2750 9100
+Wire Wire Line
+	2750 9100 3550 9100
+Wire Wire Line
+	3050 7900 2750 7900
+Connection ~ 2750 7900
+Wire Wire Line
+	2750 7900 2750 7800
+Wire Wire Line
+	3050 8000 2750 8000
+Connection ~ 2750 8000
+Wire Wire Line
+	2750 8000 2750 7900
+Wire Wire Line
+	3050 8100 2750 8100
+Connection ~ 2750 8100
+Wire Wire Line
+	2750 8100 2750 8000
+Wire Wire Line
+	3050 8200 2750 8200
+Connection ~ 2750 8200
+Wire Wire Line
+	2750 8200 2750 8100
+Wire Wire Line
+	3050 8300 2750 8300
+Connection ~ 2750 8300
+Wire Wire Line
+	2750 8300 2750 8200
+Wire Wire Line
+	3050 8400 2750 8400
+Connection ~ 2750 8400
+Wire Wire Line
+	2750 8400 2750 8300
+Wire Wire Line
+	3050 8500 2750 8500
+Connection ~ 2750 8500
+Wire Wire Line
+	2750 8500 2750 8400
+Wire Wire Line
+	2750 7100 2750 6500
+Connection ~ 2750 7100
+Wire Wire Line
+	2750 7100 3550 7100
+Wire Wire Line
+	3050 6400 2750 6400
+Wire Wire Line
+	3050 6300 2900 6300
+Connection ~ 2900 6300
+Connection ~ 3000 6800
+Wire Wire Line
+	3000 4700 3000 6800
+Wire Wire Line
+	2900 6300 2900 6700
+Wire Wire Line
+	2950 7200 5150 7200
+Wire Wire Line
+	700  7200 2950 7200
+Connection ~ 2950 7200
+Wire Wire Line
+	2950 7200 2950 4600
+Wire Wire Line
+	3050 6500 2750 6500
+Connection ~ 2750 6500
+Wire Wire Line
+	2750 6500 2750 6400
+Wire Wire Line
+	3050 6200 2900 6200
+Connection ~ 2900 6200
+Wire Wire Line
+	2900 6200 2900 6300
 $EndSCHEMATC
