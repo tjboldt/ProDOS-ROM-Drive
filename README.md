@@ -1,7 +1,10 @@
-# ProDOS ROM-Drive
-This is a peripheral card for the Apple ][ series computers that acts as a read-only solid state disk drive (SSD) all in EPROM. Although it won't run DOS, it is fully ProDOS compatible and will appear as a read-only hard drive even when booting from another drive. It holds 1022 KB of disk data and 2 KB of controlling code making a full megabyte. The drive boots ProDOS and into BASIC in under 1.5 seconds. 
+# NOTE!
+This branch is untested and just here as a work in progress. Do NOT use. Use main branch instead.
 
-![Image of Board](/Hardware/ProDOS%20ROM-Drive%202.5%20Front.jpg)
+# ProDOS ROM-Drive
+This is a peripheral card for the Apple ][ series computers that acts as a read-only solid state disk drive (SSD) all in EPROM. Although it won't run DOS, it is fully ProDOS compatible and will appear as a read-only hard drive even when booting from another drive. It holds 1024 KB of disk data with the 256 byte firmware stored in block 0001 where the SOS boot loader normally resides. The drive boots ProDOS and into BASIC in under 1.5 seconds. 
+
+![Image of Board](/Hardware/ProDOS%20ROM-Drive%203.0%20Front.jpg)
 
 ## History
 
@@ -18,6 +21,9 @@ By mid-May of 1999 I finally got around to building a third design. This time I 
 To build actual circuit boards, I tried making some by hand with marker, etching solution and copper on fibreglass boards but this proved to be far too difficult. I then learned the wonders of gerber files which can be created with a variety of PCB layout software. The files were emailed to a company in Alberta, Canada and three days later in July of 1999 I received a batch of 10 blank boards. These boards did not have the familiar green board look to them, nor were they pre-cut. I had to cut and file them to fit an Apple II slot by hand. Back then it was prohitively expensive for a young hobbiest to make less than 20 or 30 boards with the full solder-masking process due to the set-up fees.
 
 In 2019, I decided to revisit the original design as I was disappointed that the original didn't have a solder mask and was rather large for what it was. I got the board much smaller but in the process of translating my two decade old hand written notes, I made a mistake on one control line. To actually call this project finished, I had to make another revision. I also noticed the revised board was slightly larger than a credit card so I worked for a couple weeks to optimize the lines and squeeze the two-layer board down to 3.375" x 2.125". The board here is that final revision 2.5 (note that references to first, second and third design are all the solderless breadboard prototypes leading up to the 1.0 circuit board printed in 1999, 2.0 was never made, 2.1 is the board with the error patched with a jumper wire and 2.2 through 2.4 were never made).
+
+In 2021, the first and only issue was opened on the project requesting that the firmware be relocatable. I let that issue sit for a few months and then Ralle Palaveev supplied some relocatable firmware as a patch. I quickly realized that this could be placed into the second block on the drive normally reserved for SOS bootloader for the Apple ///, essentially allowing the full EPROM to be used for the drive. I disassembed Ralle's patch, merged it into the existing source
+code and made a few updates to save a few bytes and add clarity.
 
 ## Notes
 
