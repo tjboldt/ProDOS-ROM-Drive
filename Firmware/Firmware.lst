@@ -70,6 +70,7 @@ Current file: Firmware.asm
 00C72F  1  85 FB        	sta     jumpAddressHi
 00C731  1  86 43        	stx     unit
 00C733  1  D0 08        	bne     start
+00C735  1               ;This is the ProDOS entry point for this card
 00C735  1               entry:
 00C735  1  A9 58        	lda     #<knownRts
 00C737  1  85 FA        	sta     jumpAddressLo
