@@ -1,12 +1,13 @@
 #!/bin/sh 
-ca65 Warning.asm -o warning.o
-ca65 Firmware.asm -D SLOT1 -o slot1.o
-ca65 Firmware.asm -D SLOT2 -o slot2.o
-ca65 Firmware.asm -D SLOT3 -o slot3.o
-ca65 Firmware.asm -D SLOT4 -o slot4.o
-ca65 Firmware.asm -D SLOT5 -o slot5.o
-ca65 Firmware.asm -D SLOT6 -o slot6.o
-ca65 Firmware.asm -D SLOT7 -o slot7.o
-ld65 -t none warning.o slot1.o slot2.o slot3.o slot4.o slot5.o slot6.o slot7.o -o Firmware.bin
+ca65 Warning.asm -o warning.o --listing Warning.lst --list-bytes 255 || exit 1
+ca65 Firmware.asm -o firmware.o --listing Firmware.lst --list-bytes 255 || exit 1
 
-cat Firmware.bin | dd of=BlankDriveWithFirmware.po bs=1 seek=1046528 count=2048 conv=notrunc
+ld65 -t none warning.o firmware.o -o Firmware.bin || exit 1
+# assumes ProDOS-Utilities is in your path: https://github.com/tjboldt/ProDOS-Utilities
+rm BlankDriveWithFirmware.po || exit 1
+ProDOS-Utilities -c create -d BlankDriveWithFirmware.po -v ROM -s 2048 || exit 1
+ProDOS-Utilities -b 0x0001 -c writeblock -d GamesWithFirmware.po -i Firmware.bin || exit 1
+ProDOS-Utilities -b 0x0001 -c writeblock -d BlankDriveWithFirmware.po -i Firmware.bin || exit 1
+ProDOS-Utilities -b 0x0001 -c readblock -d BlankDriveWithFirmware.po || exit 1
+ProDOS-Utilities -c ls -d BlankDriveWithFirmware.po || exit 1
+
