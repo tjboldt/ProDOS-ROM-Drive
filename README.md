@@ -1,10 +1,12 @@
-# NOTE!
-This branch is untested and just here as a work in progress. Do NOT use. Use main branch instead.
+# v3
+This is a new revision of the hardware, incompatible with previous firmware and drive image. If you have a v2.5 board, see the v2.5 tag [here](https://github.com/tjboldt/ProDOS-ROM-Drive/tree/v2.5)
 
 # ProDOS ROM-Drive
 This is a peripheral card for the Apple ][ series computers that acts as a read-only solid state disk drive (SSD) all in EPROM. Although it won't run DOS, it is fully ProDOS compatible and will appear as a read-only hard drive even when booting from another drive. It holds 1024 KB of disk data with the 256 byte firmware stored in block 0001 where the SOS boot loader normally resides. The drive boots ProDOS and into BASIC in under 1.5 seconds. 
 
 ![Image of Board](/Hardware/ProDOS%20ROM-Drive%203.0%20Front.jpg)
+
+You can order blank circuit boards from [PCBWay](https://www.pcbway.com/project/shareproject/ProDOS_ROM_Drive_v3_1903e388.html) or upload the provided gerber and drill files to any PCB manufacturer.
 
 ## History
 
@@ -22,14 +24,11 @@ To build actual circuit boards, I tried making some by hand with marker, etching
 
 In 2019, I decided to revisit the original design as I was disappointed that the original didn't have a solder mask and was rather large for what it was. I got the board much smaller but in the process of translating my two decade old hand written notes, I made a mistake on one control line. To actually call this project finished, I had to make another revision. I also noticed the revised board was slightly larger than a credit card so I worked for a couple weeks to optimize the lines and squeeze the two-layer board down to 3.375" x 2.125". The board here is that final revision 2.5 (note that references to first, second and third design are all the solderless breadboard prototypes leading up to the 1.0 circuit board printed in 1999, 2.0 was never made, 2.1 is the board with the error patched with a jumper wire and 2.2 through 2.4 were never made).
 
-In 2021, the first and only issue was opened on the project requesting that the firmware be relocatable. I let that issue sit for a few months and then Ralle Palaveev supplied some relocatable firmware as a patch. I quickly realized that this could be placed into the second block on the drive normally reserved for SOS bootloader for the Apple ///, essentially allowing the full EPROM to be used for the drive. I disassembed Ralle's patch, merged it into the existing source
-code and made a few updates to save a few bytes and add clarity.
+In 2021, the first and only issue was opened on the project requesting that the firmware be relocatable. I let that issue sit for a few months and then Ralle Palaveev supplied some relocatable firmware as a patch. I quickly realized that this could be placed into the second block on the drive normally reserved for SOS bootloader for the Apple ///, essentially allowing the full EPROM to be used for the drive. I disassembed Ralle's patch, merged it into the existing source code and made a few updates to save a few bytes and add clarity.
 
 ## Notes
 
-The firmware code needs to be assembled 7 times with different parameters specifying which slot to assemble for. It is probably easier to work from the EPROM image as it is already a 1 MB disk image with the firmware in the top four ProDOS blocks.
-
-I usually use Ciderpress to copy files onto the drive image and then burn the file to a 27C801 EPROM with a GQ-4x4 USB Programmer.
+I usually use Ciderpress to copy files onto the drive image and then burn the file to a 27C801 EPROM with a GQ-4x4 USB Programmer. Do NOT overwrite block 0001 as it contains the firmware for the card.
 
 If you're planning on designing you own card, I highly recommend reading "Interfacing & Digital Experiments with your Apple" by Charles J. Engelisher and Apple's "Apple II Reference Manual" as well as "ProDOS Technical Reference Manual" if you want to build a drive. You also need an EPROM programmer, some chips and a prototyping board. My designs used simple logic gates to decode addresses but if you want to reduce chip count, you'll also need a PAL/GAL logic programmer (which some EPROM programmers can do).
 

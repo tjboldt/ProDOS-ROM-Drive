@@ -1,0 +1,103 @@
+ca65 V2.18 - N/A
+Main file   : Warning.asm
+Current file: Warning.asm
+
+000000r 1               printChar = $FDED
+000000r 1               home = $FC58
+000000r 1               
+000000r 1                 .org $2000
+002000  1               
+002000  1  20 58 FC       jsr home
+002003  1  A0 00          ldy #$0
+002005  1               nextChar:
+002005  1  B9 14 20       lda text,y
+002008  1  F0 07          beq infiniteLoop
+00200A  1  20 ED FD       jsr printChar
+00200D  1  C8             iny
+00200E  1  18             clc
+00200F  1  90 F4          bcc nextChar
+002011  1               infiniteLoop:
+002011  1  18             clc
+002012  1  90 FD          bcc infiniteLoop ;hang for eternity
+002014  1               
+002014  1               .macro aschi str
+002014  1               .repeat .strlen (str), c
+002014  1               .byte .strat (str, c) | $80
+002014  1               .endrep
+002014  1               .endmacro
+002014  1               
+002014  1               text:
+002014  1  C2 EC EF E3    aschi     "Block 0001 normally reserved for SOS"
+002018  1  EB A0 B0 B0  
+00201C  1  B0 B1 A0 EE  
+002020  1  EF F2 ED E1  
+002024  1  EC EC F9 A0  
+002028  1  F2 E5 F3 E5  
+00202C  1  F2 F6 E5 E4  
+002030  1  A0 E6 EF F2  
+002034  1  A0 D3 CF D3  
+002038  1  8D             .byte $8D
+002039  1  E2 EF EF F4    aschi     "boot contains the firmware for the"
+00203D  1  A0 E3 EF EE  
+002041  1  F4 E1 E9 EE  
+002045  1  F3 A0 F4 E8  
+002049  1  E5 A0 E6 E9  
+00204D  1  F2 ED F7 E1  
+002051  1  F2 E5 A0 E6  
+002055  1  EF F2 A0 F4  
+002059  1  E8 E5        
+00205B  1  8D             .byte $8D
+00205C  1  D0 F2 EF C4    aschi     "ProDOS ROM-Drive."
+002060  1  CF D3 A0 D2  
+002064  1  CF CD AD C4  
+002068  1  F2 E9 F6 E5  
+00206C  1  AE           
+00206D  1  8D             .byte $8D
+00206E  1  8D             .byte $8D
+00206F  1  A8 E3 A9 B1    aschi     "(c)1998 - 2021 Terence J. Boldt"
+002073  1  B9 B9 B8 A0  
+002077  1  AD A0 B2 B0  
+00207B  1  B2 B1 A0 D4  
+00207F  1  E5 F2 E5 EE  
+002083  1  E3 E5 A0 CA  
+002087  1  AE A0 C2 EF  
+00208B  1  EC E4 F4     
+00208E  1  8D             .byte $8D
+00208F  1  8D             .byte $8D
+002090  1  E7 E9 F4 E8    aschi     "github.com/tjboldt/ProDOS-ROMDrive"
+002094  1  F5 E2 AE E3  
+002098  1  EF ED AF F4  
+00209C  1  EA E2 EF EC  
+0020A0  1  E4 F4 AF D0  
+0020A4  1  F2 EF C4 CF  
+0020A8  1  D3 AD D2 CF  
+0020AC  1  CD C4 F2 E9  
+0020B0  1  F6 E5        
+0020B2  1  8D             .byte $8D
+0020B3  1  8D             .byte $8D
+0020B4  1  C4 EF A0 CE    aschi     "Do NOT overwrite Block 0001"
+0020B8  1  CF D4 A0 EF  
+0020BC  1  F6 E5 F2 F7  
+0020C0  1  F2 E9 F4 E5  
+0020C4  1  A0 C2 EC EF  
+0020C8  1  E3 EB A0 B0  
+0020CC  1  B0 B0 B1     
+0020CF  1               
+0020CF  1               end:
+0020CF  1  00           .byte 0
+0020D0  1               
+0020D0  1  00 00 00 00  .repeat	255-<end
+0020D4  1  00 00 00 00  
+0020D8  1  00 00 00 00  
+0020DC  1  00 00 00 00  
+0020E0  1  00 00 00 00  
+0020E4  1  00 00 00 00  
+0020E8  1  00 00 00 00  
+0020EC  1  00 00 00 00  
+0020F0  1  00 00 00 00  
+0020F4  1  00 00 00 00  
+0020F8  1  00 00 00 00  
+0020FC  1  00 00 00 00  
+0020D0  1               .byte 0
+0020D0  1               .endrepeat
+0020D0  1               
