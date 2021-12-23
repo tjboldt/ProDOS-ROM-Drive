@@ -2,8 +2,9 @@ ca65 V2.18 - N/A
 Main file   : Firmware.asm
 Current file: Firmware.asm
 
-000000r 1                   writeLatchHigh = $C081
-000000r 1                   writeLatchLow = $C080
+000000r 1               ;i/o ports to write to
+000000r 1                 writeLatchHigh = $C081
+000000r 1                 writeLatchLow = $C080
 000000r 1               
 000000r 1               ;temp variables becasue 6502 only has 3 registers
 000000r 1               	highLatch = $F8
@@ -61,7 +62,7 @@ Current file: Firmware.asm
 00C721  1  A0 C3          ldy  #<text
 00C723  1               drawtxt:
 00C723  1  B1 44          lda  (buflo),y
-00C725  1  99 D0 07     	sta  $07D0,y ;put text on last line
+00C725  1  99 0D 07     	sta  $07D0-<text,y ;put text on last line
 00C728  1  C8           	iny
 00C729  1  D0 F8        	bne  drawtxt
 00C72B  1               
@@ -95,7 +96,7 @@ Current file: Firmware.asm
 00C754  1  60           	rts        ;go back to ProDOS
 00C755  1               
 00C755  1               docmd:
-00C755  1  A5 42        	lda command
+00C755  1  A5 42        	lda  command
 00C757  1  F0 08        	beq  getstat ;command 0 is GetStatus
 00C759  1  C9 01        	cmp  #$01
 00C75B  1  F0 0C        	beq  readblk ;command 1 is ReadBlock
@@ -208,5 +209,4 @@ Current file: Firmware.asm
 00C7FC  1  00 00        .byte   0,0  ;0000 blocks = check status
 00C7FE  1  03           .byte   3    ;bit 0=read 1=status
 00C7FF  1  35           .byte  <entry ;low byte of entry
-00C800  1               
-00C800  1               
+00C7FF  1               
