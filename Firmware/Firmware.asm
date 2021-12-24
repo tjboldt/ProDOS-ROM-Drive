@@ -58,11 +58,13 @@
   ldy  #<text
 drawtxt:
   lda  (buflo),y
+  beq  boot
 	sta  $07D0-<text,y ;put text on last line
 	iny
 	bne  drawtxt
 
 ;load block 0000 at $0800
+boot:
 	lda  #$08
 	sta  bufhi
 	sta  jumpAddressHi
