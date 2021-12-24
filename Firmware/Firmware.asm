@@ -1,5 +1,6 @@
-    writeLatchHigh = $C081
-    writeLatchLow = $C080
+;i/o ports to write to
+  writeLatchHigh = $C081
+  writeLatchLow = $C080
 
 ;temp variables becasue 6502 only has 3 registers
 	highLatch = $F8
@@ -57,11 +58,13 @@
   ldy  #<text
 drawtxt:
   lda  (buflo),y
-	sta  $07D0,y ;put text on last line
+  beq  boot
+	sta  $07D0-<text,y ;put text on last line
 	iny
 	bne  drawtxt
 
 ;load block 0000 at $0800
+boot:
 	lda  #$08
 	sta  bufhi
 	sta  jumpAddressHi
@@ -91,7 +94,7 @@ start:
 	rts        ;go back to ProDOS
 
 docmd:
-	lda command
+	lda  command
 	beq  getstat ;command 0 is GetStatus
 	cmp  #$01
 	beq  readblk ;command 1 is ReadBlock
@@ -191,4 +194,3 @@ end:
 .byte   0,0  ;0000 blocks = check status
 .byte   3    ;bit 0=read 1=status
 .byte  <entry ;low byte of entry
-
