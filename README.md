@@ -1,12 +1,12 @@
-# v3
-This is a new revision of the hardware, incompatible with previous firmware and drive image. If you have a v2.5 board, see the v2.5 tag [here](https://github.com/tjboldt/ProDOS-ROM-Drive/tree/v2.5)
+# v4.0
+This is a new revision of the hardware, incompatible with previous firmware and drive image before v3. If you have a v2.5 board, see the v2.5 tag [here](https://github.com/tjboldt/ProDOS-ROM-Drive/tree/v2.5). Note that all of v2.1, v2.5 and v3.0 have a small design mistake that didn't properly buffer the data bus the way it was intended in the original v1.0 version. This has been fixed for v4.0.
 
 # ProDOS ROM-Drive
 This is a peripheral card for the Apple ][ series computers that acts as a read-only solid state disk drive (SSD) all in EPROM. Although it won't run DOS, it is fully ProDOS compatible and will appear as a read-only hard drive even when booting from another drive. It holds 1024 KB of disk data with the 256 byte firmware stored in block 0001 where the SOS boot loader normally resides. The drive boots ProDOS and into BASIC in under 1.5 seconds. 
 
-![Image of Board](/Hardware/ProDOS%20ROM-Drive%203.0%20Front.jpg)
+![Image of Board](/Hardware/ProDOS%20ROM-Drive%20Front.jpg)
 
-You can order blank circuit boards from [PCBWay](https://www.pcbway.com/project/shareproject/ProDOS_ROM_Drive_v3_1903e388.html) or upload the provided gerber and drill files to any PCB manufacturer.
+You can order blank circuit boards from [PCBWay](https://www.pcbway.com/project/shareproject/ProDOS_ROM_Drive_v4_4fe0794f.html) or upload the provided gerber and drill files to any PCB manufacturer.
 
 ## History
 
