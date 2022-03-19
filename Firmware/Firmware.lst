@@ -184,12 +184,12 @@ Current file: Firmware.asm
 00C7C5  1               .endrep
 00C7C5  1               .endmacro
 00C7C5  1               
-00C7C5  1  D2 CF CD AD  text:   aschi   "ROM-Drive (c)1998-2021 Terence J. Boldt"
+00C7C5  1  D2 CF CD AD  text:   aschi   "ROM-Drive (c)1998-2022 Terence J. Boldt"
 00C7C9  1  C4 F2 E9 F6  
 00C7CD  1  E5 A0 A8 E3  
 00C7D1  1  A9 B1 B9 B9  
 00C7D5  1  B8 AD B2 B0  
-00C7D9  1  B2 B1 A0 D4  
+00C7D9  1  B2 B2 A0 D4  
 00C7DD  1  E5 F2 E5 EE  
 00C7E1  1  E3 E5 A0 CA  
 00C7E5  1  AE A0 C2 EF  

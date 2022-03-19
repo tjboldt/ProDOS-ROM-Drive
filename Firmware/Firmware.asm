@@ -180,7 +180,7 @@ readnext256:
 .endrep
 .endmacro
 
-text:   aschi   "ROM-Drive (c)1998-2021 Terence J. Boldt"
+text:   aschi   "ROM-Drive (c)1998-2022 Terence J. Boldt"
 end:
 .byte	 0
 
