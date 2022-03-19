@@ -30,7 +30,7 @@ text:
   aschi     "ProDOS ROM-Drive."
   .byte $8D
   .byte $8D
-  aschi     "(c)1998 - 2021 Terence J. Boldt"
+  aschi     "(c)1998 - 2022 Terence J. Boldt"
   .byte $8D
   .byte $8D
   aschi     "github.com/tjboldt/ProDOS-ROMDrive"

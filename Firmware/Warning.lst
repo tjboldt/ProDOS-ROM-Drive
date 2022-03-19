@@ -54,10 +54,10 @@ Current file: Warning.asm
 00206C  1  AE           
 00206D  1  8D             .byte $8D
 00206E  1  8D             .byte $8D
-00206F  1  A8 E3 A9 B1    aschi     "(c)1998 - 2021 Terence J. Boldt"
+00206F  1  A8 E3 A9 B1    aschi     "(c)1998 - 2022 Terence J. Boldt"
 002073  1  B9 B9 B8 A0  
 002077  1  AD A0 B2 B0  
-00207B  1  B2 B1 A0 D4  
+00207B  1  B2 B2 A0 D4  
 00207F  1  E5 F2 E5 EE  
 002083  1  E3 E5 A0 CA  
 002087  1  AE A0 C2 EF  
