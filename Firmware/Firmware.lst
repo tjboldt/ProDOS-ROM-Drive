@@ -6,12 +6,6 @@ Current file: Firmware.asm
 000000r 1                 writeLatchHigh = $C081
 000000r 1                 writeLatchLow = $C080
 000000r 1               
-000000r 1               ;temp variables becasue 6502 only has 3 registers
-000000r 1               	highLatch = $F8
-000000r 1               	lowLatch = $F9
-000000r 1               	tempY = $FE
-000000r 1               	blockHalfCounter = $FF
-000000r 1               
 000000r 1               ;ProDOS defines
 000000r 1                 command = $42   ;ProDOS command
 000000r 1                 unit  = $43  ;7=drive 6-4=slot 3-0=not used
@@ -23,191 +17,205 @@ Current file: Firmware.asm
 000000r 1                 nodev = $28  ;no device connected
 000000r 1                 wperr = $2B  ;write protect error
 000000r 1               
-000000r 1               ;for relocatable code, address to jump to instead of JSR absolute + RTS
-000000r 1               	jumpAddressLo = $FA
-000000r 1               	jumpAddressHi = $FB
-000000r 1               	ioAddressLo   = $FC
-000000r 1               	ioAddressHi   = $FD
-000000r 1               	knownRts   = $FF58
+000000r 1               ;for relocatable code
+000000r 1                 ioAddressLo   = $FA
+000000r 1                 ioAddressHi   = $FB
+000000r 1                 tempY = $FC
+000000r 1                 blockHalfCounter = $FD
+000000r 1                 lowLatch = $FE
+000000r 1                 highLatch = $FF
+000000r 1                 knownRts   = $FF58
 000000r 1               
-000000r 1               	.org  $C700
+000000r 1                 .org  $C700
 00C700  1                 ;code is relocatable
 00C700  1                 ; but set to $c700 for
 00C700  1                 ; readability
 00C700  1               
 00C700  1               ;ID bytes for booting and drive detection
-00C700  1  E0 20        	cpx  #$20    ;ID bytes for ProDOS and the
-00C702  1  A0 00        	ldy  #$00    ; Apple Autostart ROM
-00C704  1  E0 03        	cpx  #$03    ;
-00C706  1  E0 3C        	cpx  #$3C    ;this one for older II's
+00C700  1  E0 20          cpx  #$20    ;ID bytes for ProDOS and the
+00C702  1  A0 00          ldy  #$00    ; Apple Autostart ROM
+00C704  1  E0 03          cpx  #$03    ;
+00C706  1  E0 3C          cpx  #$3C    ;this one for older II's
 00C708  1               
 00C708  1               ;zero out block numbers and buffer address
-00C708  1  84 44        	sty	 buflo
-00C70A  1  84 46        	sty  blklo
-00C70C  1  84 47        	sty  blkhi
-00C70E  1  C8           	iny				;set command = 1 for read block
-00C70F  1  84 42        	sty  command
-00C711  1  84 FA        	sty  jumpAddressLo ;$01 of $0801 where boot code starts
-00C713  1  20 58 FF     	jsr  knownRts ;jump to known RTS to get our address from the stack
-00C716  1  BA           	tsx
-00C717  1  BD 00 01       lda  $0100,x ;this for example would be $C7 in slot 7
-00C71A  1  85 45          sta  bufhi   ;keep the slot here
+00C708  1  84 44          sty	 buflo
+00C70A  1  84 46          sty  blklo
+00C70C  1  84 47          sty  blkhi
+00C70E  1  C8             iny				;set command = 1 for read block
+00C70F  1  84 42          sty  command
+00C711  1  20 58 FF       jsr  knownRts ;jump to known RTS to get our address from the stack
+00C714  1  BA             tsx
+00C715  1  BD 00 01       lda  $0100,x ;this for example would be $C7 in slot 7
+00C718  1  85 45          sta  bufhi   ;keep the slot here
+00C71A  1  0A             asl
+00C71B  1  0A             asl
 00C71C  1  0A             asl
 00C71D  1  0A             asl
-00C71E  1  0A             asl
-00C71F  1  0A             asl
-00C720  1  AA             tax
-00C721  1               
-00C721  1               ;display copyright message
-00C721  1  A0 C5          ldy  #<text
-00C723  1               drawtxt:
-00C723  1  B1 44          lda  (buflo),y
-00C725  1  F0 06          beq  boot
-00C727  1  99 0B 07     	sta  $07D0-<text,y ;put text on last line
-00C72A  1  C8           	iny
-00C72B  1  D0 F6        	bne  drawtxt
-00C72D  1               
-00C72D  1               ;load block 0000 at $0800
-00C72D  1               boot:
-00C72D  1  A9 08        	lda  #$08
-00C72F  1  85 45        	sta  bufhi
-00C731  1  85 FB        	sta  jumpAddressHi
-00C733  1  86 43        	stx  unit
-00C735  1  D0 08        	bne  start
-00C737  1               ;This is the ProDOS entry point for this card
-00C737  1               entry:
-00C737  1  A9 58        	lda  #<knownRts
-00C739  1  85 FA        	sta  jumpAddressLo
-00C73B  1  A9 FF        	lda  #>knownRts
-00C73D  1  85 FB        	sta  jumpAddressHi
-00C73F  1               start:
-00C73F  1  A9 C0        	lda  #$C0
-00C741  1  85 FD        	sta  ioAddressHi
-00C743  1  20 58 FF     	jsr  knownRts
-00C746  1  BA           	tsx
-00C747  1  BD 00 01     	lda  $0100,x
-00C74A  1  0A           	asl  a
-00C74B  1  0A           	asl  a
-00C74C  1  0A           	asl  a
-00C74D  1  0A           	asl  a
-00C74E  1  AA           	tax
-00C74F  1  E4 43        	cpx  unit	 ;make sure same as ProDOS
-00C751  1  F0 04        	beq  docmd ;yep, do command
-00C753  1  38           	sec				 ;nope, set device not connected
-00C754  1  A9 28        	lda  #nodev
-00C756  1  60           	rts        ;go back to ProDOS
-00C757  1               
-00C757  1               docmd:
-00C757  1  A5 42        	lda  command
-00C759  1  F0 08        	beq  getstat ;command 0 is GetStatus
-00C75B  1  C9 01        	cmp  #$01
-00C75D  1  F0 0C        	beq  readblk ;command 1 is ReadBlock
-00C75F  1  38           	sec          ;Format/Write not permitted
-00C760  1  A9 2B        	lda  #wperr  ;write protect error
-00C762  1  60           	rts          ;go back to ProDOS
-00C763  1               
-00C763  1               getstat:
-00C763  1  18           	clc       ;send back status
-00C764  1  A9 00        	lda  #$00 ;good status
-00C766  1  A2 00        	ldx  #$00 ;1024 blocks
-00C768  1  A0 04        	ldy  #$04 ;
-00C76A  1  60           	rts
-00C76B  1               
-00C76B  1               readblk:
-00C76B  1  A5 47        	lda  blkhi	;get hi block
-00C76D  1  0A           	asl  a    ;shift up to top 3 bits
-00C76E  1  0A           	asl  a    ;since that's all the high
-00C76F  1  0A           	asl  a    ;blocks we can handle
-00C770  1  0A           	asl  a    ;
-00C771  1  0A           	asl  a    ;
-00C772  1  85 F8        	sta  highLatch   ;save it in scratch ram 0
-00C774  1               			;so we can stuff it in the
-00C774  1               			;high latch later
-00C774  1  A5 46        	lda  blklo   ;get low block
-00C776  1  4A           	lsr  a    ;shift so we get the top 5
-00C777  1  4A           	lsr  a    ;bits - this also goes in
-00C778  1  4A           	lsr  a    ;the high latch
-00C779  1  05 F8        	ora  highLatch ;add it to those top 3 bits
-00C77B  1  85 F8        	sta  highLatch ;save it back in scratch ram
-00C77D  1  A5 46        	lda  blklo   ;get low block
-00C77F  1  0A           	asl  a    ;shift it to top 3 bits
-00C780  1  0A           	asl  a    ;
-00C781  1  0A           	asl  a    ;
-00C782  1  0A           	asl  a    ;
-00C783  1  0A           	asl  a    ;
-00C784  1  85 F9        	sta  lowLatch
-00C786  1  A9 02        	lda  #$02
-00C788  1  85 FF        	sta  blockHalfCounter
-00C78A  1               
-00C78A  1               ;This gets 256 bytes from the ROM card
-00C78A  1               
-00C78A  1               read256:
-00C78A  1  A0 00        	ldy  #$00
-00C78C  1  A5 F8        	lda  highLatch	;get high latch value
-00C78E  1  9D 81 C0     	sta  writeLatchHigh,x	;set high latch for card
-00C791  1               loop256:
-00C791  1  A5 F9        	lda  lowLatch
-00C793  1  9D 80 C0     	sta  writeLatchLow,x
-00C796  1  8A           	txa
-00C797  1  09 80        	ora  #$80
-00C799  1  85 FC        	sta  ioAddressLo
-00C79B  1               loop16:
-00C79B  1  84 FE        	sty  tempY
-00C79D  1  A0 00        	ldy  #$00
-00C79F  1  B1 FC        	lda  (ioAddressLo),y
-00C7A1  1  A4 FE        	ldy  tempY
-00C7A3  1  91 44        	sta  (buflo),y
-00C7A5  1  C8           	iny
-00C7A6  1  E6 FC        	inc  ioAddressLo
-00C7A8  1  A5 FC        	lda  ioAddressLo
-00C7AA  1  29 0F        	and  #$0F
-00C7AC  1  D0 ED        	bne  loop16
-00C7AE  1  E6 F9        	inc  lowLatch
-00C7B0  1  C0 00        	cpy  #$00
-00C7B2  1  D0 DD        	bne  loop256
-00C7B4  1  C6 FF        	dec  blockHalfCounter
-00C7B6  1  D0 08        	bne  readnext256
-00C7B8  1  C6 45        	dec  bufhi
-00C7BA  1  18           	clc       ;clear error code for success
-00C7BB  1  A9 00        	lda  #$00
-00C7BD  1  6C FA 00     	jmp  (jumpAddressLo)
-00C7C0  1               
-00C7C0  1               readnext256:
-00C7C0  1  E6 45        	inc  bufhi
-00C7C2  1  18             clc
-00C7C3  1  90 C5          bcc  read256
-00C7C5  1               
-00C7C5  1               ;macro for string with high-bit set
-00C7C5  1               .macro aschi str
-00C7C5  1               .repeat .strlen (str), c
-00C7C5  1               .byte .strat (str, c) | $80
-00C7C5  1               .endrep
-00C7C5  1               .endmacro
-00C7C5  1               
-00C7C5  1  D2 CF CD AD  text:   aschi   "ROM-Drive (c)1998-2022 Terence J. Boldt"
-00C7C9  1  C4 F2 E9 F6  
-00C7CD  1  E5 A0 A8 E3  
-00C7D1  1  A9 B1 B9 B9  
-00C7D5  1  B8 AD B2 B0  
-00C7D9  1  B2 B2 A0 D4  
-00C7DD  1  E5 F2 E5 EE  
-00C7E1  1  E3 E5 A0 CA  
-00C7E5  1  AE A0 C2 EF  
-00C7E9  1  EC E4 F4     
-00C7EC  1               end:
-00C7EC  1  00           .byte	 0
-00C7ED  1               
-00C7ED  1               ; These bytes need to be at the top of the 256 byte firmware as ProDOS
-00C7ED  1               ; uses these to find the entry point and drive capabilities
-00C7ED  1               
-00C7ED  1  00 00 00 00  .repeat	251-<end
-00C7F1  1  00 00 00 00  
-00C7F5  1  00 00 00 00  
-00C7F9  1  00 00 00     
+00C71E  1  85 43          sta unit
+00C720  1               
+00C720  1               ;display copyright message
+00C720  1  A0 CE          ldy  #<text
+00C722  1               drawtxt:
+00C722  1  B1 44          lda  (buflo),y
+00C724  1  F0 06          beq  boot
+00C726  1  99 02 07       sta  $07D0-<text,y ;put text on last line
+00C729  1  C8             iny
+00C72A  1  D0 F6          bne  drawtxt
+00C72C  1               
+00C72C  1               ;load block 0000 at $0800
+00C72C  1               boot:
+00C72C  1  A9 08          lda  #$08 ;push $0800 onto the stack so an RTS will run at $0801
+00C72E  1  85 45          sta  bufhi
+00C730  1  48             pha
+00C731  1  A9 00          lda #$00
+00C733  1  48             pha
+00C734  1               ;This is the ProDOS entry point for this card
+00C734  1               entry:
+00C734  1  A6 43          ldx  unit  ;make sure it's drive 1
+00C736  1  10 04          bpl  docmd ;yep, do command
+00C738  1  38             sec				 ;nope, set device not connected
+00C739  1  A9 28          lda  #nodev
+00C73B  1  60             rts        ;go back to ProDOS
+00C73C  1               
+00C73C  1               docmd:
+00C73C  1  A5 42          lda  command
+00C73E  1  F0 08          beq  getstat ;command 0 is GetStatus
+00C740  1  C9 01          cmp  #$01
+00C742  1  F0 0C          beq  readblk ;command 1 is ReadBlock
+00C744  1  38             sec          ;Format/Write not permitted
+00C745  1  A9 2B          lda  #wperr  ;write protect error
+00C747  1  60             rts          ;go back to ProDOS
+00C748  1               
+00C748  1               getstat:
+00C748  1  18             clc       ;send back status
+00C749  1  A9 00          lda  #$00 ;good status
+00C74B  1  A2 00          ldx  #$00 ;1024 blocks
+00C74D  1  A0 04          ldy  #$04 ;
+00C74F  1  60             rts
+00C750  1               
+00C750  1               readblk:
+00C750  1  A5 FA          lda ioAddressLo
+00C752  1  48             pha
+00C753  1  A5 FB          lda ioAddressHi
+00C755  1  48             pha
+00C756  1  A5 FC          lda tempY
+00C758  1  48             pha
+00C759  1  A5 FD          lda blockHalfCounter
+00C75B  1  48             pha
+00C75C  1  A5 FE          lda lowLatch
+00C75E  1  48             pha
+00C75F  1  A5 FF          lda highLatch
+00C761  1  48             pha
+00C762  1               
+00C762  1  A5 47          lda  blkhi	;get hi block
+00C764  1  0A             asl  a    ;shift up to top 3 bits
+00C765  1  0A             asl  a    ;since that's all the high
+00C766  1  0A             asl  a    ;blocks we can handle
+00C767  1  0A             asl  a    ;
+00C768  1  0A             asl  a    ;
+00C769  1  85 FF          sta  highLatch
+00C76B  1  A5 46          lda  blklo   ;get low block
+00C76D  1  4A             lsr  a    ;shift so we get the top 5
+00C76E  1  4A             lsr  a    ;bits - this also goes in
+00C76F  1  4A             lsr  a    ;the high latch
+00C770  1  05 FF          ora  highLatch ;add it to those top 3 bits
+00C772  1  85 FF        	sta  highLatch ;save it back in scratch ram
+00C774  1  9D 81 C0       sta  writeLatchHigh,x	;set high latch for card
+00C777  1  A5 46          lda  blklo   ;get low block
+00C779  1  0A             asl  a    ;shift it to top 3 bits
+00C77A  1  0A             asl  a    ;
+00C77B  1  0A             asl  a    ;
+00C77C  1  0A             asl  a    ;
+00C77D  1  0A             asl  a    ;
+00C77E  1  85 FE          sta lowLatch
+00C780  1  A9 02          lda  #$02
+00C782  1  85 FD          sta  blockHalfCounter
+00C784  1  A9 C0          lda #$C0
+00C786  1  85 FB          sta ioAddressHi
+00C788  1               
+00C788  1               ;This gets 256 bytes from the ROM card
+00C788  1               
+00C788  1               read256:
+00C788  1  A0 00          ldy  #$00
+00C78A  1               loop256:
+00C78A  1  A5 FE          lda  lowLatch
+00C78C  1  9D 80 C0       sta  writeLatchLow,x
+00C78F  1  8A             txa
+00C790  1  09 80          ora  #$80
+00C792  1  85 FA          sta  ioAddressLo
+00C794  1               
+00C794  1               loop16:
+00C794  1  84 FC          sty  tempY
+00C796  1  A0 00          ldy  #$00
+00C798  1  B1 FA          lda  (ioAddressLo),y
+00C79A  1  A4 FC          ldy  tempY
+00C79C  1  91 44          sta  (buflo),y
+00C79E  1  C8             iny
+00C79F  1  E6 FA          inc  ioAddressLo
+00C7A1  1  A5 FA          lda  ioAddressLo
+00C7A3  1  29 0F          and  #$0F
+00C7A5  1  D0 ED          bne  loop16
+00C7A7  1               
+00C7A7  1               continue256:
+00C7A7  1  E6 FE          inc  lowLatch
+00C7A9  1  C0 00          cpy  #$00
+00C7AB  1  D0 DD          bne  loop256
+00C7AD  1  C6 FD          dec  blockHalfCounter
+00C7AF  1  D0 18          bne  readnext256
+00C7B1  1               
+00C7B1  1               finish:
+00C7B1  1  68             pla
+00C7B2  1  85 FF          sta highLatch
+00C7B4  1  68             pla
+00C7B5  1  85 FE          sta lowLatch
+00C7B7  1  68             pla
+00C7B8  1  85 FD          sta blockHalfCounter
+00C7BA  1  68             pla
+00C7BB  1  85 FC          sta tempY
+00C7BD  1  68             pla
+00C7BE  1  85 FB          sta ioAddressHi
+00C7C0  1  68             pla
+00C7C1  1  85 FA          sta ioAddressLo
+00C7C3  1               
+00C7C3  1  C6 45          dec  bufhi
+00C7C5  1  18             clc       ;clear error code for success
+00C7C6  1  A9 00          lda  #$00
+00C7C8  1  60             rts
+00C7C9  1               
+00C7C9  1               readnext256:
+00C7C9  1  E6 45          inc  bufhi   ; set buffer to receive next 256 bytes
+00C7CB  1  18             clc          ; effectively a branch always
+00C7CC  1  90 BA          bcc  read256
+00C7CE  1               
+00C7CE  1               ;macro for string with high-bit set
+00C7CE  1               .macro aschi str
+00C7CE  1               .repeat .strlen (str), c
+00C7CE  1               .byte .strat (str, c) | $80
+00C7CE  1               .endrep
+00C7CE  1               .endmacro
+00C7CE  1               
+00C7CE  1  D2 CF CD AD  text:   aschi   "ROM-Drive (c)1998-2022 Terence J. Boldt"
+00C7D2  1  C4 F2 E9 F6  
+00C7D6  1  E5 A0 A8 E3  
+00C7DA  1  A9 B1 B9 B9  
+00C7DE  1  B8 AD B2 B0  
+00C7E2  1  B2 B2 A0 D4  
+00C7E6  1  E5 F2 E5 EE  
+00C7EA  1  E3 E5 A0 CA  
+00C7EE  1  AE A0 C2 EF  
+00C7F2  1  EC E4 F4     
+00C7F5  1               end:
+00C7F5  1  00           .byte	 0
+00C7F6  1               
+00C7F6  1               ; These bytes need to be at the top of the 256 byte firmware as ProDOS
+00C7F6  1               ; uses these to find the entry point and drive capabilities
+00C7F6  1               
+00C7F6  1  00 00 00 00  .repeat	251-<end
+00C7FA  1  00 00        
 00C7FC  1               .byte 0
 00C7FC  1               .endrepeat
 00C7FC  1               
 00C7FC  1  00 00        .byte   0,0  ;0000 blocks = check status
 00C7FE  1  03           .byte   3    ;bit 0=read 1=status
-00C7FF  1  37           .byte  <entry ;low byte of entry
+00C7FF  1  34           .byte  <entry ;low byte of entry
 00C7FF  1               
