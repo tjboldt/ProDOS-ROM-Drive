@@ -22,6 +22,11 @@
   highLatch = $FF
   knownRts   = $FF58
 
+;autostart ROM next card
+  sloop = $FABA
+  keyboard = $C000
+  clearKeyboard = $C010
+
   .org  $C700
   ;code is relocatable
   ; but set to $c700 for
@@ -33,7 +38,14 @@
   cpx  #$03    ;
   cpx  #$3C    ;this one for older II's
 
+;check for ESC key and if so, jump to next slot in autostart
+  lda keyboard
+  cmp #$9B
+  bne start
+  jmp sloop
+
 ;zero out block numbers and buffer address
+start:
   sty	 buflo
   sty  blklo
   sty  blkhi
@@ -90,18 +102,13 @@ getstat:
   rts
 
 readblk:
-  lda ioAddressLo
+saveVars:
+  ldy #ioAddressLo
+varLoop:
+  lda $00,y
   pha
-  lda ioAddressHi
-  pha
-  lda tempY
-  pha
-  lda blockHalfCounter
-  pha
-  lda lowLatch
-  pha
-  lda highLatch
-  pha
+  iny
+  bne varLoop
   
   lda  blkhi	;get hi block
   asl  a    ;shift up to top 3 bits
