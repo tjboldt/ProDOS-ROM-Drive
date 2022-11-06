@@ -22,15 +22,22 @@ By mid-May of 1999 I finally got around to building a third design. This time I 
 
 To build actual circuit boards, I tried making some by hand with marker, etching solution and copper on fibreglass boards but this proved to be far too difficult. I then learned the wonders of gerber files which can be created with a variety of PCB layout software. The files were emailed to a company in Alberta, Canada and three days later in July of 1999 I received a batch of 10 blank boards. These boards did not have the familiar green board look to them, nor were they pre-cut. I had to cut and file them to fit an Apple II slot by hand. Back then it was prohitively expensive for a young hobbiest to make less than 20 or 30 boards with the full solder-masking process due to the set-up fees.
 
-In 2019, I decided to revisit the original design as I was disappointed that the original didn't have a solder mask and was rather large for what it was. I got the board much smaller but in the process of translating my two decade old hand written notes, I made a mistake on one control line. To actually call this project finished, I had to make another revision. I also noticed the revised board was slightly larger than a credit card so I worked for a couple weeks to optimize the lines and squeeze the two-layer board down to 3.375" x 2.125". The board here is that final revision 2.5 (note that references to first, second and third design are all the solderless breadboard prototypes leading up to the 1.0 circuit board printed in 1999, 2.0 was never made, 2.1 is the board with the error patched with a jumper wire and 2.2 through 2.4 were never made).
+In 2019, I decided to revisit the original design as I was disappointed that the original didn't have a solder mask and was rather large for what it was. I got the board much smaller but in the process of translating my two decade old hand written notes, I made a mistake on one control line. To actually call this project finished, I had to make another revision. I also noticed the revised board was slightly larger than a credit card so I worked for a couple weeks to optimize the lines and squeeze the two-layer board down to 3.375" x 2.125". (Note that references above to first, second and third design are all the solderless breadboard prototypes leading up to the 1.0 circuit board printed in 1999, 2.0 was never made, 2.1 is the board with the error patched with a jumper wire and 2.2 through 2.4 were never made).
 
-In 2021, the first and only issue was opened on the project requesting that the firmware be relocatable. I let that issue sit for a few months and then Ralle Palaveev supplied some relocatable firmware as a patch. I quickly realized that this could be placed into the second block on the drive normally reserved for SOS bootloader for the Apple ///, essentially allowing the full EPROM to be used for the drive. I disassembed Ralle's patch, merged it into the existing source code and made a few updates to save a few bytes and add clarity.
+In 2021, the first ever issue was opened on the project requesting that the firmware be relocatable. I let that issue sit for a few months and then Ralle Palaveev supplied some relocatable firmware as a patch. I quickly realized that this could be placed into the second block on the drive normally reserved for SOS bootloader for the Apple ///, essentially allowing the full EPROM to be used for the drive. I disassembed Ralle's patch, merged it into the existing source code and made a few updates to save a few bytes and add clarity. This change required some differences in wiring for the firmware addressing on the card. The final revision 4.0 was made in 2022 to fix the data buffer wiring but was otherwise the same as 3.0.
 
 ## Notes
-
-I usually use Ciderpress to copy files onto the drive image and then burn the file to a 27C801 EPROM with a GQ-4x4 USB Programmer. Do NOT overwrite block 0001 as it contains the firmware for the card.
+I used to use Ciderpress to copy files onto the drive image but now use my own cross-platform command line tool [ProDOS-Utilities](https://github.com/tjboldt/ProDOS-Utilities) and sometimes make modifications to the image live via an Apple II emulator. I then burn the file to a 27C801 EPROM with a GQ-4x4 USB Programmer. Do NOT overwrite block 0001 in the image as it contains the firmware for the card.
 
 If you're planning on designing you own card, I highly recommend reading "Interfacing & Digital Experiments with your Apple" by Charles J. Engelisher and Apple's "Apple II Reference Manual" as well as "ProDOS Technical Reference Manual" if you want to build a drive. You also need an EPROM programmer, some chips and a prototyping board. My designs used simple logic gates to decode addresses but if you want to reduce chip count, you'll also need a PAL/GAL logic programmer (which some EPROM programmers can do).
 
-##
+## Website
 Official website is [apple2.ca](http://apple2.ca/).
+
+## Purchasing a ProDOS ROM-Drive
+I generally no longer sell these cards but you can buy them online from [Laser](https://www.laser.com/product_info.php/item/ProDOS_ROM_Drive-Apple_II_ProDOS_bootable_1MB_read-only_drive/cPath/288_292/products_id/1984) and other retailers.
+
+## Other links
+- [Thread about building the card](https://tinkerdifferent.com/threads/building-tjboldts-prodos-rom-drive-for-apple.1249/)
+- [Article about the card](https://www.callapple.org/hardware/prodos-rom-drive-version-3/)
+- [Alternate version with fewer chips](https://www.ebay.com/itm/374004896438)
