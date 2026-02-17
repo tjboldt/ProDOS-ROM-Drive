@@ -1,14 +1,14 @@
 ;i/o ports to write to
-  writeLatchHigh = $C081
-  writeLatchLow = $C080
+  ioPortHigh = $C081
+  ioPortLow  = $C080
 
 ;ProDOS defines
   command = $42   ;ProDOS command
   unit  = $43  ;7=drive 6-4=slot 3-0=not used
   buflo = $44  ;low address of buffer
   bufhi = $45  ;hi address of buffer
-  blklo = $46  ;low block
-  blkhi = $47  ;hi block
+  blklo = $46  ;low block #
+  blkhi = $47  ;hi block #
   ioerr = $27  ;I/O error code
   nodev = $28  ;no device connected
   wperr = $2B  ;write protect error
@@ -20,6 +20,7 @@
   blockHalfCounter = $FD
   lowLatch = $FE
   highLatch = $FF
+
   knownRts   = $FF58
 
 ;autostart ROM next card
@@ -30,7 +31,7 @@
   .org  $C700
   ;code is relocatable
   ; but set to $c700 for
-  ; readability
+  ; readability in assembly listing
 
 ;ID bytes for booting and drive detection
   cpx  #$20    ;ID bytes for ProDOS and the
@@ -46,7 +47,7 @@
 
 ;zero out block numbers and buffer address
 start:
-  sty	 buflo
+  sty  buflo
   sty  blklo
   sty  blkhi
   iny				;set command = 1 for read block
@@ -79,7 +80,7 @@ boot:
   pha
 ;This is the ProDOS entry point for this card
 entry:
-  ldx  unit  ;make sure it's drive 1
+  ldx  unit  ;make sure it's drive 1 (bit is 7 clear; bit 7 set would mean drive 2)
   bpl  docmd ;yep, do command
   sec				 ;nope, set device not connected
   lda  #nodev
@@ -97,12 +98,12 @@ docmd:
 getstat:  
   clc       ;send back status
   lda  #$00 ;good status
-  ldx  #$00 ;1024 blocks
-  ldy  #$04 ;
+  ldx  #$00 ;2048 blocks
+  ldy  #$08 ;
   rts
 
 readblk:
-saveVars:
+saveVars:  ;stash zero page space - we replace it on exit 
   ldy #ioAddressLo
 varLoop:
   lda $00,y
@@ -110,31 +111,31 @@ varLoop:
   iny
   bne varLoop
   
-  lda  blkhi	;get hi block
+  lda  blkhi    ;get MSB of requested block number
   asl  a    ;shift up to top 3 bits
   asl  a    ;since that's all the high
-  asl  a    ;blocks we can handle
+  asl  a    ;blocks we can handle (i.e. 0x07ff)
   asl  a    ;
   asl  a    ;
   sta  highLatch 
-  lda  blklo   ;get low block
+  lda  blklo   ;get LSB of requested block number
   lsr  a    ;shift so we get the top 5
   lsr  a    ;bits - this also goes in
   lsr  a    ;the high latch
   ora  highLatch ;add it to those top 3 bits
-	sta  highLatch ;save it back in scratch ram
-  sta  writeLatchHigh,x	;set high latch for card
-  lda  blklo   ;get low block
+  sta  highLatch ;save it back in scratch ram
+  sta  ioPortHigh,x	;set high latch for card - x is still set to unit number
+  lda  blklo   ;get LSB of requested block number (to get the bottom 3 bits this time)
   asl  a    ;shift it to top 3 bits
   asl  a    ;
   asl  a    ;
   asl  a    ;
   asl  a    ;
-  sta lowLatch
+  sta lowLatch ;save it back in scratch ram
   lda  #$02
   sta  blockHalfCounter
   lda #$C0
-  sta ioAddressHi
+  sta ioAddressHi ;MSB of I/O address pointer - we access them 16 at a time
 
 ;This gets 256 bytes from the ROM card
 
@@ -142,43 +143,38 @@ read256:
   ldy  #$00
 loop256:
   lda  lowLatch
-  sta  writeLatchLow,x
+  sta  ioPortLow,x ; x (still) holds unit number
   txa
   ora  #$80
-  sta  ioAddressLo
+  sta  ioAddressLo ;LSB of I/O address pointer - now points to the correct slot 
 
 loop16:
   sty  tempY
   ldy  #$00
-  lda  (ioAddressLo),y
+  lda  (ioAddressLo),y ;pull a value from card indexed by y
   ldy  tempY
-  sta  (buflo),y
+  sta  (buflo),y       ;save that same value to the output buffer also indexed by y
   iny
   inc  ioAddressLo
   lda  ioAddressLo
-  and  #$0F
+  and  #$0F            ;mod 16, we will roll through this 16 times due to the outer loop256
   bne  loop16
 
 continue256:
-  inc  lowLatch
-  cpy  #$00
-  bne  loop256
+  inc  lowLatch        ;point at the next batch of 16
+  cpy  #$00            ;did we complete 256?
+  bne  loop256         ;no - loop around
   dec  blockHalfCounter
-  bne  readnext256
+  bne  readnext256     ;did we do 256 twice?  if no - bump the MSB of buffer and loop back around
 
-finish:
+restoreVars:  ;restore zero page space we saved when initially called 
+  ldy #highLatch
+restoreLoop:
   pla
-  sta highLatch
-  pla
-  sta lowLatch
-  pla
-  sta blockHalfCounter
-  pla
-  sta tempY
-  pla
-  sta ioAddressHi
-  pla
-  sta ioAddressLo
+  sta $00,y
+  dey
+  cpy #ioAddressLo - 1
+  bne restoreLoop
 
   dec  bufhi
   clc       ;clear error code for success
