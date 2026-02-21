@@ -1,5 +1,5 @@
 ;i/o ports to write to
-  ioPortHigh = $C081
+  writeIoPortHigh = $C081
   ioPortLow  = $C080
 
 ;ProDOS defines
@@ -80,7 +80,7 @@ boot:
   pha
 ;This is the ProDOS entry point for this card
 entry:
-  ldx  unit  ;make sure it's drive 1 (bit is 7 clear; bit 7 set would mean drive 2)
+  ldx  unit  ;make sure it's drive 1 (bit 7 is clear; bit 7 set would mean drive 2)
   bpl  docmd ;yep, do command
   sec				 ;nope, set device not connected
   lda  #nodev
@@ -124,7 +124,7 @@ varLoop:
   lsr  a    ;the high latch
   ora  highLatch ;add it to those top 3 bits
   sta  highLatch ;save it back in scratch ram
-  sta  ioPortHigh,x	;set high latch for card - x is still set to unit number
+  sta  writeIoPortHigh,x	;set high latch for card - x is still set to unit number
   lda  blklo   ;get LSB of requested block number (to get the bottom 3 bits this time)
   asl  a    ;shift it to top 3 bits
   asl  a    ;
@@ -193,7 +193,7 @@ readnext256:
 .endrep
 .endmacro
 
-text:   aschi   "ROM-Drive (c)1998-2022 Terence J. Boldt"
+text:   aschi   "ROM-Drive (c)1998-2026 Terence J. Boldt"
 end:
 .byte	 0
 
