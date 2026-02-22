@@ -1,6 +1,6 @@
 ;i/o ports to write to
   writeIoPortHigh = $C081
-  ioPortLow  = $C080
+  writeIoPortLow  = $C080
 
 ;ProDOS defines
   command = $42   ;ProDOS command
@@ -143,7 +143,7 @@ read256:
   ldy  #$00
 loop256:
   lda  lowLatch
-  sta  ioPortLow,x ; x (still) holds unit number
+  sta  writeIoPortLow,x ; x (still) holds unit number
   txa
   ora  #$80
   sta  ioAddressLo ;LSB of I/O address pointer - now points to the correct slot 
