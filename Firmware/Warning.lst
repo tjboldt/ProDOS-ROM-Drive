@@ -47,49 +47,48 @@ Current file: Warning.asm
 002055  1  EF F2 A0 F4  
 002059  1  E8 E5        
 00205B  1  8D             .byte $8D
-00205C  1  D0 F2 EF C4    aschi     "ProDOS ROM-Drive."
+00205C  1  D0 F2 EF C4    aschi     "ProDOS ROM-Drive HW4.0 FW4.1"
 002060  1  CF D3 A0 D2  
 002064  1  CF CD AD C4  
 002068  1  F2 E9 F6 E5  
-00206C  1  AE           
-00206D  1  8D             .byte $8D
-00206E  1  8D             .byte $8D
-00206F  1  A8 E3 A9 B1    aschi     "(c)1998 - 2026 Terence J. Boldt"
-002073  1  B9 B9 B8 A0  
-002077  1  AD A0 B2 B0  
-00207B  1  B2 B6 A0 D4  
-00207F  1  E5 F2 E5 EE  
-002083  1  E3 E5 A0 CA  
-002087  1  AE A0 C2 EF  
-00208B  1  EC E4 F4     
-00208E  1  8D             .byte $8D
-00208F  1  8D             .byte $8D
-002090  1  E7 E9 F4 E8    aschi     "github.com/tjboldt/ProDOS-ROMDrive"
-002094  1  F5 E2 AE E3  
-002098  1  EF ED AF F4  
-00209C  1  EA E2 EF EC  
-0020A0  1  E4 F4 AF D0  
-0020A4  1  F2 EF C4 CF  
-0020A8  1  D3 AD D2 CF  
-0020AC  1  CD C4 F2 E9  
-0020B0  1  F6 E5        
-0020B2  1  8D             .byte $8D
-0020B3  1  8D             .byte $8D
-0020B4  1  C4 EF A0 CE    aschi     "Do NOT overwrite Block 0001"
-0020B8  1  CF D4 A0 EF  
-0020BC  1  F6 E5 F2 F7  
-0020C0  1  F2 E9 F4 E5  
-0020C4  1  A0 C2 EC EF  
-0020C8  1  E3 EB A0 B0  
-0020CC  1  B0 B0 B1     
-0020CF  1               
-0020CF  1               end:
-0020CF  1  00           .byte 0
-0020D0  1               
-0020D0  1  00 00 00 00  .repeat	255-<end
-0020D4  1  00 00 00 00  
-0020D8  1  00 00 00 00  
-0020DC  1  00 00 00 00  
+00206C  1  A0 C8 D7 B4  
+002070  1  AE B0 A0 C6  
+002074  1  D7 B4 AE B1  
+002078  1  8D             .byte $8D
+002079  1  8D             .byte $8D
+00207A  1  A8 E3 A9 B1    aschi     "(c)1998 - 2026 Terence J. Boldt"
+00207E  1  B9 B9 B8 A0  
+002082  1  AD A0 B2 B0  
+002086  1  B2 B6 A0 D4  
+00208A  1  E5 F2 E5 EE  
+00208E  1  E3 E5 A0 CA  
+002092  1  AE A0 C2 EF  
+002096  1  EC E4 F4     
+002099  1  8D             .byte $8D
+00209A  1  8D             .byte $8D
+00209B  1  E7 E9 F4 E8    aschi     "github.com/tjboldt/ProDOS-ROM-Drive"
+00209F  1  F5 E2 AE E3  
+0020A3  1  EF ED AF F4  
+0020A7  1  EA E2 EF EC  
+0020AB  1  E4 F4 AF D0  
+0020AF  1  F2 EF C4 CF  
+0020B3  1  D3 AD D2 CF  
+0020B7  1  CD AD C4 F2  
+0020BB  1  E9 F6 E5     
+0020BE  1  8D             .byte $8D
+0020BF  1  8D             .byte $8D
+0020C0  1  C4 EF A0 CE    aschi     "Do NOT overwrite Block 0001"
+0020C4  1  CF D4 A0 EF  
+0020C8  1  F6 E5 F2 F7  
+0020CC  1  F2 E9 F4 E5  
+0020D0  1  A0 C2 EC EF  
+0020D4  1  E3 EB A0 B0  
+0020D8  1  B0 B0 B1     
+0020DB  1               
+0020DB  1               end:
+0020DB  1  00           .byte 0
+0020DC  1               
+0020DC  1  00 00 00 00  .repeat	255-<end
 0020E0  1  00 00 00 00  
 0020E4  1  00 00 00 00  
 0020E8  1  00 00 00 00  
@@ -98,6 +97,6 @@ Current file: Warning.asm
 0020F4  1  00 00 00 00  
 0020F8  1  00 00 00 00  
 0020FC  1  00 00 00 00  
-0020D0  1               .byte 0
-0020D0  1               .endrepeat
-0020D0  1               
+0020DC  1               .byte 0
+0020DC  1               .endrepeat
+0020DC  1               

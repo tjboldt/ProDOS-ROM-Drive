@@ -27,13 +27,13 @@ text:
   .byte $8D
   aschi     "boot contains the firmware for the"
   .byte $8D
-  aschi     "ProDOS ROM-Drive."
+  aschi     "ProDOS ROM-Drive HW4.0 FW4.1"
   .byte $8D
   .byte $8D
   aschi     "(c)1998 - 2026 Terence J. Boldt"
   .byte $8D
   .byte $8D
-  aschi     "github.com/tjboldt/ProDOS-ROMDrive"
+  aschi     "github.com/tjboldt/ProDOS-ROM-Drive"
   .byte $8D
   .byte $8D
   aschi     "Do NOT overwrite Block 0001"
