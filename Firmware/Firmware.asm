@@ -9,6 +9,7 @@
   bufhi = $45  ;hi address of buffer
   blklo = $46  ;low block #
   blkhi = $47  ;hi block #
+  badcmd = $01 ;invalid command
   ioerr = $27  ;I/O error code
   nodev = $28  ;no device connected
   wperr = $2B  ;write protect error
@@ -50,7 +51,7 @@ start:
   sty  buflo
   sty  blklo
   sty  blkhi
-  iny				;set command = 1 for read block
+  iny		;set command = 1 for read block
   sty  command 
   jsr  knownRts ;jump to known RTS to get our address from the stack
   tsx
@@ -91,8 +92,12 @@ docmd:
   beq  getstat ;command 0 is GetStatus
   cmp  #$01
   beq  readblk ;command 1 is ReadBlock
-  sec          ;Format/Write not permitted
-  lda  #wperr  ;write protect error
+  cmp  #$04    ;command 2 is WriteBlock, command 3 is Format, >=4 are undefined
+  lda  #wperr  ;write protect error (lda preserves carry from the cmp)
+  bcc  senderr ;commands 2 and 3 are valid but not permitted
+  lda  #badcmd ;anything higher is not a command at all
+senderr:
+  sec          ;flag the error for ProDOS
   rts          ;go back to ProDOS
 
 getstat:  
